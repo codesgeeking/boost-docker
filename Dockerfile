@@ -6,7 +6,7 @@ WORKDIR /root
 
 RUN apt-get update
 
-RUN apt-get install -y wget bzip2 build-essential cmake gcc g++
+RUN apt-get install -y wget bzip2 build-essential cmake gcc g++ openssl-devel
 
 RUN wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 \
     && tar --bzip2 -xf boost_1_66_0.tar.bz2 \
