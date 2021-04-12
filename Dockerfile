@@ -13,7 +13,6 @@ RUN wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.
     && rm -rf boost_1_66_0.tar.bz2 \
     && cd boost_1_66_0 \
     && chmod +x bootstrap.sh && ./bootstrap.sh  \
-    && chmod +x bootstrap.sh && ./bootstrap.sh  \
-    && ./b2 install
+    && ./b2  link=shared install
 
 WORKDIR /root/codes
