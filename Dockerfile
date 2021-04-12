@@ -6,8 +6,14 @@ WORKDIR /root
 
 RUN apt-get update
 
-RUN apt-get install -y wget
+RUN apt-get install -y wget bzip2 build-essential cmake gcc g++
 
-RUN wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2  boost_1_66_0.tar.bz2
+RUN wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 \
+    && tar --bzip2 -xf boost_1_66_0.tar.bz2 \
+    && rm -rf boost_1_66_0.tar.bz2 \
+    && cd boost_1_66_0 \
+    && chmod +x bootstrap.sh && ./bootstrap.sh  \
+    && chmod +x bootstrap.sh && ./bootstrap.sh  \
+    && ./b2 install
 
-RUN tar -zxvf boost_1_66_0.tar.bz2
+WORKDIR /root/codes
