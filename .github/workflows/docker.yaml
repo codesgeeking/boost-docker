@@ -1,0 +1,70 @@
+name: docker
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Download and install Boost
+        # You may pin to the exact commit or the version.
+        # uses: MarkusJx/install-boost@072e2dd3b37f8652cda1b00bcaca9bcfe06b7278
+        uses: MarkusJx/install-boost@v1.0.1
+        with:
+          # The boost version to install, e.g. "1.73.0"
+          boost_version: 1.66.0
+          # The toolset used to compile boost, e.g. "msvc14.2". May only be used on windows
+          # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Configure CMake
+        # Use a bash shell so we can use the same syntax for environment variable
+        # access regardless of the host operating system
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        # Note the current convention is to use the -S and -B options here to specify source
+        # and build directories, but this is only available with CMake 3.13 and higher.
+        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+      - name: Build
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        # Execute the build.  You can specify a specific target with "--target <NAME>"
+        run: cmake --build . --config $BUILD_TYPE
+  # docker:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - uses: actions/checkout@v2
+  #     # Runs a single command using the runners shell
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKER_HUB_USERNAME }}
+  #         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+  #     - name: Set up Docker Buildx
+  #       id: buildx
+  #       uses: docker/setup-buildx-action@v1
+  #     - name: Build and push
+  #       id: docker_build
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: ./
+  #         file: ./Dockerfile
+  #         platforms: linux/amd64,linux/arm64
+  #         push: true
+  #         tags: codesgeeking/proxies
+  #     - name: Image digest
+  #       run: echo ${{ steps.docker_build.outputs.digest }}
