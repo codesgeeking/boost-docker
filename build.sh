@@ -1,1 +1,1 @@
-docker build -t boost-docker .
+docker build -t codesgeeking/boost .
