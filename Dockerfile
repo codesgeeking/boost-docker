@@ -17,6 +17,6 @@ RUN wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.
     && chmod +x bootstrap.sh && ./bootstrap.sh  \
     && ./b2  link=shared install
 
-RUN echo "/usr/local/lib" >> /etc/ld.so.conf && ldconfig
+RUN echo "/usr/local/lib" >> /etc/ld.so.conf
 
 WORKDIR /root/codes
