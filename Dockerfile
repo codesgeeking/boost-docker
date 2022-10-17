@@ -6,7 +6,7 @@ WORKDIR /root
 
 RUN apt-get update
 
-RUN apt-get install -y wget bzip2 build-essential cmake gcc g++ openssl libssl-dev
+RUN apt-get install -y wget bzip2 build-essential cmake gcc g++ openssl libssl-dev net-tools
 
 
 
